@@ -1,76 +1,62 @@
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { z } from "zod";
 
-export default function EmployeeRegistration() {
+import { columns } from "@/components/datatable/columns";
+import { DataTable } from "@/components/datatable/data-table";
+import { UserNav } from "@/components/datatable/user-nav";
+import { taskSchema } from "@/components/data/schema";
+import tasksData from "@/components/data/tasks.json";
+
+type Task = z.infer<typeof taskSchema>;
+
+export default function TaskPage() {
+  const [tasks] = useState<Task[]>(() => {
+    try {
+      return z.array(taskSchema).parse(tasksData as unknown);
+    } catch (err) {
+      console.error("Failed to parse tasks.json:", err);
+      return [];
+    }
+  });
+
+  if (!tasks || tasks.length === 0) return <p>No tasks available.</p>;
+
   return (
-    <div className="w-full px-4 py-8">
-      <Card className="w-full">
-        <CardHeader>
-          <CardTitle className="text-2xl">
-            Employee Registration
-          </CardTitle>
-        </CardHeader>
+    <>
+      <div className="md:hidden">
+        <img
+          src="/examples/tasks-light.png"
+          width={1280}
+          height={998}
+          alt="Playground light"
+          className="block dark:hidden"
+        />
+        <img
+          src="/examples/tasks-dark.png"
+          width={1280}
+          height={998}
+          alt="Playground dark"
+          className="hidden dark:block"
+        />
+      </div>
 
-        <CardContent>
-          <form className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-            <div className="flex flex-col gap-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="firstName">First Name</Label>
-                <Input id="firstName" type="text" placeholder="John" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
-                <Input id="lastName" type="text" placeholder="Doe" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="john.doe@example.com"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number</Label>
-                <Input id="phone" type="tel" placeholder="+1 123 456 7890" />
-              </div>
-            </div>
+      <div className="flex flex-1 flex-col gap-4 sm:gap-6 mt-10">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex flex-col gap-1">
+            <h2 className="text-2xl font-semibold tracking-tight">
+              Welcome back!
+            </h2>
+            <p className="text-muted-foreground">
+              Here&apos;s a list of your tasks for this month.
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <UserNav />
+          </div>
+        </div>
 
-            {/* Right Column */}
-            <div className="flex flex-col gap-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="position">Position</Label>
-                <Input
-                  id="position"
-                  type="text"
-                  placeholder="Software Engineer"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="department">Department</Label>
-                <Input id="department" type="text" placeholder="Engineering" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="startDate">Start Date</Label>
-                <Input id="startDate" type="date" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="employeeId">Employee ID</Label>
-                <Input
-                  id="employeeId"
-                  type="text"
-                  placeholder="EMP-12345"
-                />
-              </div>
-            </div>
-          </form>
-               <div className="md:col-span-2 mt-4">
-              <Button type="submit">Register Employee</Button>
-            </div>
-        </CardContent>
-      </Card>
-    </div>
+        <DataTable data={tasks} columns={columns} />
+      </div>
+    </>
   );
 }

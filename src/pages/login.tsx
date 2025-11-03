@@ -7,28 +7,29 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle
+  CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { login } from "@/Services/authService";
 
 function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   try {
-  //     await login(email, password);
-  //     navigate("/dashboard");
-  //   } catch (err: any) {
-  //     const message =
-  //       err.response?.data?.message ||
-  //       "Login failed. Please check your credentials.";
-  //     alert(message);
-  //   }
-  // };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await login(email, password);
+      navigate("/dashboard");
+    } catch (err: any) {
+      const message =
+        err.response?.data?.message ||
+        "Login failed. Please check your credentials.";
+      alert(message);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -38,9 +39,7 @@ function Login() {
           <CardDescription>Login to your account</CardDescription>
         </CardHeader>
         <CardContent>
-          <form 
-          // onSubmit={handleSubmit} 
-          className="flex flex-col gap-6">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
