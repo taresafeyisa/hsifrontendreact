@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { columns } from "./columns";
-import { DataTable } from "@/components/datatable/data-table";
-import { UserNav } from "@/components/datatable/user-nav";
 import { getAccessToken } from "@/Services/authService"; // Assuming getAccessToken is available
+import { DataTable } from "@/components/data-table";
 
 export default function TaskPage() {
   const [users, setUsers] = useState<any[]>([]);
@@ -82,9 +81,6 @@ export default function TaskPage() {
             <p className="text-muted-foreground">
               Here&apos;s a list of users in your system.
             </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <UserNav />
           </div>
         </div>
 
