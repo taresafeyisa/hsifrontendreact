@@ -79,14 +79,14 @@ export function DataTableToolbar<TData>({
   return (
     <div className="flex items-center justify-between overflow-x-hidden">
       <div className="flex flex-1 items-center gap-2">
-        {/* Global search input placed first */}
-        <Input
-          placeholder="Search..."
-          value={(table.getState() as any).globalFilter ?? ""}
-          onChange={(e) => table.setGlobalFilter?.(e.target.value ?? undefined)}
-          className="h-8 w-[180px] lg:w-[320px]"
-        />
-        {/* Primary column input removed to avoid duplicate search boxes. */}
+        {titleColumn && (
+          <Input
+            placeholder="Filter..."
+            value={(titleColumn.getFilterValue() as string) ?? ""}
+            onChange={(event) => titleColumn.setFilterValue(event.target.value)}
+            className="h-8 w-[150px] lg:w-[250px]"
+          />
+        )}
         {facetedColumns.map((col) => {
           const metaFilter = (col.columnDef as any).meta?.filter as
             | string
