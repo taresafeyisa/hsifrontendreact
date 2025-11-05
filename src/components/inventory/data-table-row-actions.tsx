@@ -1,6 +1,4 @@
-"use client";
-
-import type { Row } from "@tanstack/react-table";
+import { type Row } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -28,12 +26,7 @@ interface DataTableRowActionsProps<TData> {
 export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
-  let task: any;
-  try {
-    task = taskSchema.parse(row.original);
-  } catch (err) {
-    task = row.original as any;
-  }
+  const task = taskSchema.parse(row.original);
 
   return (
     <DropdownMenu>

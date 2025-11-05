@@ -1,8 +1,10 @@
 import * as React from "react";
-import type { Column } from "@tanstack/react-table";
+import { type Column } from "@tanstack/react-table";
 import { Check, PlusCircle } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -18,8 +20,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 
 interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>;
@@ -117,19 +117,11 @@ export function DataTableFacetedFilter<TData, TValue>({
                       <option.icon className="text-muted-foreground size-4" />
                     )}
                     <span>{option.label}</span>
-                    {facets?.get(option.value) &&
-                      !(
-                        column &&
-                        (column.id === "email" ||
-                          column.id === "emailid" ||
-                          column.id === "fullName" ||
-                          column.id === "status" ||
-                          column.id === "priority")
-                      ) && (
-                        <span className="text-muted-foreground ml-auto flex size-4 items-center justify-center font-mono text-xs">
-                          {facets.get(option.value)}
-                        </span>
-                      )}
+                    {facets?.get(option.value) && (
+                      <span className="text-muted-foreground ml-auto flex size-4 items-center justify-center font-mono text-xs">
+                        {facets.get(option.value)}
+                      </span>
+                    )}
                   </CommandItem>
                 );
               })}

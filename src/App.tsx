@@ -5,6 +5,7 @@ import MainLayout from "./components/mainLayout";
 import { ThemeProvider } from "./components/theme-provider";
 import User from "./pages/Users/user";
 import Employee from "./pages/employee";
+import Inventory from "./pages/inventory";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<MainLayout />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="employee" element={<Employee />} />
+            <Route path="inventory" element={<Inventory />} />
 
             <Route path="user" element={<User />} />
           </Route>

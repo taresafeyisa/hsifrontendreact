@@ -1,142 +1,108 @@
-import { useEffect, useState } from "react";
-
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 export default function Dashboard() {
-  const [userName, setUserName] = useState<string>("User");
-  const [stats, setStats] = useState({
-    allUsers: 0,
-    activeUsers: 0,
-    newThisMonth: 0,
-  });
-  const [now, setNow] = useState<Date>(new Date());
-
-  useEffect(() => {
-    const stored = localStorage.getItem("userName");
-    if (stored) setUserName(stored);
-
-    // placeholder stats; replace with API call if available
-    setStats({ allUsers: 124, activeUsers: 98, newThisMonth: 7 });
-
-    // auto-update system time every second (no manual refresh button)
-    const t = setInterval(() => setNow(new Date()), 1_000);
-    return () => clearInterval(t);
-  }, []);
-
-  const formatSmartDate = (d: Date) => {
-    const today = new Date();
-    const yesterday = new Date();
-    yesterday.setDate(today.getDate() - 1);
-
-    const time = d.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-
-    // For today show full weekday name (e.g. "Monday • 10:00")
-    if (d.toDateString() === today.toDateString()) {
-      return `${d.toLocaleDateString([], { weekday: "long" })} • ${time}`;
-    }
-
-    // For yesterday show "Yesterday • Mon, Jun 9"
-    if (d.toDateString() === yesterday.toDateString()) {
-      return `Yesterday • ${d.toLocaleDateString([], {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-      })}`;
-    }
-
-    // Otherwise show short weekday + date
-    return d.toLocaleDateString([], {
-      weekday: "short",
-      month: "short",
-      day: "numeric",
-    });
-  };
-
-  const tzShort = (() => {
-    try {
-      const parts = new Intl.DateTimeFormat(undefined, {
-        timeZoneName: "short",
-      }).formatToParts(now);
-      return parts.find((p) => p.type === "timeZoneName")?.value ?? "";
-    } catch {
-      return "";
-    }
-  })();
-
-  const Card = ({
-    title,
-    value,
-    subtitle,
-    emoji,
-  }: {
-    title: string;
-    value: number | string;
-    subtitle?: string;
-    emoji?: string;
-  }) => (
-    <div className="rounded-2xl bg-white/40 p-5 flex items-center justify-between transition-colors duration-150 border-2 border-gray-300/90 hover:border-indigo-300 min-h-[96px]">
-      <div>
-        <div className="text-sm text-muted-foreground font-medium">{title}</div>
-        <div className="mt-1 text-3xl font-extrabold text-foreground">
-          {value}
-        </div>
-        {subtitle && (
-          <div className="text-xs text-muted-foreground mt-1">{subtitle}</div>
-        )}
-      </div>
-      <div className="text-4xl ml-4">{emoji}</div>
-    </div>
-  );
-
   return (
-    <div className="flex flex-1 flex-col gap-6 p-6 pt-0">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-semibold">
-            Welcome, {userName} 👋
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Overview of your HRM dashboard
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <div className="px-3 py-1 rounded-full bg-white/30 text-sm text-muted-foreground flex flex-col items-end border-2 border-gray-300/80">
-            <span className="font-medium">{formatSmartDate(now)}</span>
-            <span className="text-[11px] text-muted-foreground/70">
-              {now.toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: true,
-              })}
-              {tzShort && <span className="ml-1">• {tzShort}</span>}
-            </span>
-          </div>
-          {/* Refresh button removed — time updates automatically */}
-        </div>
+    <>
+      <div className="mt-8 mb-4 flex items-center justify-between">
+        <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
       </div>
 
-      <div className="grid auto-rows-min gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-        <Card
-          title="All Users"
-          value={stats.allUsers}
-          subtitle="Total users in system"
-          emoji="👥"
-        />
-        <Card
-          title="Active Users"
-          value={stats.activeUsers}
-          subtitle="Users active this week"
-          emoji="🟢"
-        />
-        <Card
-          title="New This Month"
-          value={stats.newThisMonth}
-          subtitle="Joined this month"
-          emoji="✨"
-        />
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              className="text-muted-foreground h-4 w-4"
+            >
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+            </svg>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">$45,231.89</div>
+            <p className="text-muted-foreground text-xs">
+              +20.1% from last month
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Subscriptions</CardTitle>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              className="text-muted-foreground h-4 w-4"
+            >
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">+2350</div>
+            <p className="text-muted-foreground text-xs">
+              +180.1% from last month
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Sales</CardTitle>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              className="text-muted-foreground h-4 w-4"
+            >
+              <rect width="20" height="14" x="2" y="5" rx="2" />
+              <path d="M2 10h20" />
+            </svg>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">+12,234</div>
+            <p className="text-muted-foreground text-xs">
+              +19% from last month
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Active Now</CardTitle>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              className="text-muted-foreground h-4 w-4"
+            >
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+            </svg>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">+573</div>
+            <p className="text-muted-foreground text-xs">
+              +201 since last hour
+            </p>
+          </CardContent>
+        </Card>
       </div>
-    </div>
+    </>
   );
 }

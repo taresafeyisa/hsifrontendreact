@@ -1,11 +1,12 @@
-import type { ColumnDef } from "@tanstack/react-table";
+import { type ColumnDef } from "@tanstack/react-table";
+
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 
 import { labels, priorities, statuses } from "../data/data";
-import type { Task } from "../data/schema";
+import { type Task } from "../data/schema";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Badge } from "@/components/ui/badge";
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -64,8 +65,6 @@ export const columns: ColumnDef<Task>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />
     ),
-    // Provide meta options so the toolbar renders a faceted filter for Status
-    meta: { title: "Status", options: statuses },
     cell: ({ row }) => {
       const status = statuses.find(
         (status) => status.value === row.getValue("status")
@@ -93,8 +92,6 @@ export const columns: ColumnDef<Task>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Priority" />
     ),
-    // Provide meta options so the toolbar renders a faceted filter for Priority
-    meta: { title: "Priority", options: priorities },
     cell: ({ row }) => {
       const priority = priorities.find(
         (priority) => priority.value === row.getValue("priority")
